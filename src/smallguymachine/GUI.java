@@ -1,0 +1,1399 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package smallguymachine;
+
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author ladon
+ */
+public class GUI extends javax.swing.JFrame
+{
+
+    static SmallGuyMachine sgm = new SmallGuyMachine();
+    ;
+    private TableModel model;
+//    private int instruction;
+    int step = 0;
+    int score = 0;
+    String[][] qna = {
+        {"What is the second step in a cycle?",
+            "Cycle",
+            "Fetch",
+            "Execute",
+            "Decode"},
+        
+        {"What is the purpose of the PC (Program Counter)?",
+            "Get the instruction from the current memory location",
+            "Carry out an instruction",
+            "Keep track of which memory location is next",
+            "Perform simple mathematical functions"},
+        
+        {"Given to numbers a and b, what set of instructions could be used to form the following code?\n\nif(a>b){\n    write(a);\n}",
+            "(LOD #b),   (SUB #a),   (BRP #brp),   (BRA #bra),   (#brp LOD #a),   (SND 0),   (#bra ...)",
+            "(LOD #a),   (SUB #b),   (BRP #brp),   (BRA #bra),   (#brp LOD #a),   (SND 0),   (#bra ...)",
+            "(LOD #a),   (SUB #b),   (BRP #a),   (BRA #b),   (#a LOD #a),   (SND 0),   (#b ...)",
+            "(LOD #a),   (ADD #b),   (BRP #brp),   (BRA #bra),   (#bra LOD #a),   (SND 0),   (#brp ...)"},
+        
+        {"What is the purpose of the ALU (Arithmetic Logic Unit)?",
+            "Keep track of which memory location is next",
+            "Perform simple mathematical functions",
+            "Seperates an instruction into the instruction type, and the location it is affecting",
+            "Carry out an instruction"},
+        
+        {"What is the first step in a cycle?",
+            "Decode",
+            "Execute",
+            "Cycle",
+            "Fetch"},
+        
+        {"What is the purpose of the Execute step?",
+            "Carry out an instruction",
+            "Perform simple mathematical functions",
+            "Get the instruction from the current memory location",
+            "Seperates an instruction into the instruction type, and the location it is affecting"},
+        
+        {"What would be the output of the following instructions?\n\nLOD #b\nSUB #a\nBRP #brp\nBRA #bra\n#brp LOD #a\nSND 0\n#bra SND 0\nSTP 0\n#a VAR 10\n#b VAR 2",
+            "10",
+            "-8",
+            "2",
+            "8"},
+        
+        {"How many steps are there in the instruction cycle",
+            "3",
+            "2",
+            "5",
+            "6"},
+        
+        {"What is the purpose of the Fetch step?",
+            "Seperates an instruction into the instruction type, and the location it is affecting",
+            "Keep track of which memory location is next",
+            "Get the instruction from the current memory location",
+            "Carry out an instruction"},
+        
+        {"What is the third step in a cycle?",
+            "Fetch",
+            "Cycle",
+            "Decode",
+            "Execute"},
+        
+        {"What set of instructions would read in a number and save it in the memory location 15",
+            "(RCV 15)",
+            "(RCV 0),   (ADD 15)",
+            "(RCV 0),   (SND 15)",
+            "(RCV 0),   (SAV 15)"},
+        
+        {"What is the purpose of the Decode step?",
+            "Get the instruction from the current memory location",
+            "Seperates an instruction into the instruction type, and the location it is affecting",
+            "Perform simple mathematical functions",
+            "Keep track of which memory location is next"}
+    };
+    int currentQ = 0;
+    int buttonValues[]={0,0,0,0};
+
+    
+    
+    Timer autoTimer = new Timer(100, new ActionListener()
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (step == 0)
+            {
+                fetch();
+            } else if (step == 1)
+            {
+                decode();
+            } else if (step == 2)
+            {
+                execute();
+            }
+        }
+    });
+    
+  
+    
+    
+    
+    /**
+     * Creates new form GUI
+     */
+    public GUI()
+    {
+        initComponents();
+        table.setEnabled(false);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
+
+        jProgressBar1 = new javax.swing.JProgressBar();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        highButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        pcField = new javax.swing.JTextField();
+        instructionField = new javax.swing.JTextField();
+        addressField = new javax.swing.JTextField();
+        numberField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        instructionLabel = new javax.swing.JLabel();
+        addressLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        wholeInstructionField = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        executeButton = new javax.swing.JButton();
+        nextCycleButton = new javax.swing.JButton();
+        fetchButton = new javax.swing.JButton();
+        decodeButton = new javax.swing.JButton();
+        autoButton = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        stopButton = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        explanationBox = new javax.swing.JTextArea();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        lowButton = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTextArea5 = new javax.swing.JTextArea();
+        jPanel11 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextArea4 = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTextArea6 = new javax.swing.JTextArea();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTextArea7 = new javax.swing.JTextArea();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setResizable(false);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setText("Small Guy Machine");
+
+        jTextArea1.setColumns(10);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("values{\none = 1;\ntwo = 10;\nthree = 1;\n}\nrun{\nwhile(one<=two){\nwrite(one);\nwrite(two);\ncalc(one=one+three);\nif(one<=two){\ncalc(two=two-three);\n}\n}\nwrite(one);\nwrite(two);\n}");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        highButton.setText("Done");
+        highButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                highButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("High Level Code");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Memory");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        pcField.setEditable(false);
+
+        instructionField.setEditable(false);
+
+        addressField.setEditable(false);
+
+        numberField.setEditable(false);
+        numberField.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                numberFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("PC");
+
+        instructionLabel.setText("Instruction");
+
+        addressLabel.setText("Address");
+
+        jLabel4.setText("Accumulator");
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("ALU");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        wholeInstructionField.setEditable(false);
+
+        jLabel13.setText("Whole Instruction");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(pcField, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addressLabel))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(instructionField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                                .addComponent(numberField, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addComponent(instructionLabel))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel4)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(wholeInstructionField, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pcField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(instructionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(instructionLabel))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addressLabel))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(wholeInstructionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
+        );
+
+        Object[][] content = new Object [256][4];
+
+        for(int i=0;i<256;i++)
+        {
+            content[i][0]=i;
+            content[i][1]=0;
+            content[i][2]=Integer.toHexString(i);
+            content[i][3]=0;
+
+        }
+        String [] fields = {"Memory","Value","Hex Memory","Hex Value"};
+        table.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        table.setModel(new javax.swing.table.DefaultTableModel(content,fields));
+        table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(table);
+
+        executeButton.setText("Execute");
+        executeButton.setEnabled(false);
+        executeButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                executeButtonActionPerformed(evt);
+            }
+        });
+
+        nextCycleButton.setText("Cycle");
+        nextCycleButton.setEnabled(false);
+        nextCycleButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                nextCycleButtonActionPerformed(evt);
+            }
+        });
+
+        fetchButton.setText("Fetch");
+        fetchButton.setEnabled(false);
+        fetchButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fetchButtonActionPerformed(evt);
+            }
+        });
+
+        decodeButton.setText("Decode");
+        decodeButton.setEnabled(false);
+        decodeButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                decodeButtonActionPerformed(evt);
+            }
+        });
+
+        autoButton.setText("Auto");
+        autoButton.setEnabled(false);
+        autoButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                autoButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("CPU");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Input");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Output");
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jTextField1.setEnabled(false);
+        jTextField1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        stopButton.setText("Stop");
+        stopButton.setEnabled(false);
+        stopButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                stopButtonActionPerformed(evt);
+            }
+        });
+
+        explanationBox.setEditable(false);
+        explanationBox.setColumns(20);
+        explanationBox.setRows(5);
+        explanationBox.setWrapStyleWord(true);
+        jScrollPane5.setViewportView(explanationBox);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText("Console");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel12)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 922, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jTextArea3.setEditable(false);
+        jTextArea3.setColumns(6);
+        jTextArea3.setRows(5);
+        jScrollPane3.setViewportView(jTextArea3);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(fetchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(decodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(executeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nextCycleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(autoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(161, 161, 161)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fetchButton)
+                            .addComponent(decodeButton)
+                            .addComponent(executeButton)
+                            .addComponent(nextCycleButton)
+                            .addComponent(autoButton)
+                            .addComponent(stopButton)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Low Level Code");
+
+        jTextArea2.setColumns(10);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
+
+        lowButton.setText("Done");
+        lowButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                lowButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(highButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 178, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(lowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lowButton)
+                    .addComponent(highButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Simulator", jPanel3);
+
+        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton4.setEnabled(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton5.setEnabled(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton6.setEnabled(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
+        jButton1.setText("Start");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel14.setText("Quiz");
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jTextArea5.setEditable(false);
+        jTextArea5.setColumns(20);
+        jTextArea5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextArea5.setRows(5);
+        jScrollPane7.setViewportView(jTextArea5);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Quiz", jPanel9);
+
+        jTextArea4.setEditable(false);
+        jTextArea4.setColumns(20);
+        jTextArea4.setFont(new java.awt.Font("Courier New", 0, 13)); // NOI18N
+        jTextArea4.setLineWrap(true);
+        jTextArea4.setRows(5);
+        jTextArea4.setText("High Level Language Help\n\nThe first thing to note about the high level language is \nthat it is split into two different parts; the values \ncode and the run code.\n\nThe value code is started with the word 'values' followed\nby a set of '{}' brackets.\nInside these brackets any value you plan on using in your \nprogram must be written. To do this the first thing \nwritten will be the name of number you want to use; like \n'first', 'a' or 'highest'. This is then followed by '=' \nand the number you want this value to start off with.\nThe code that goes inside this brackets will make up \nthe VAR instructions when translated down to low level \ncode.\n\nValue example:\nvalue{\n    first = 10;\n    a = 15;\n    top = 100;\n}\n\nThe second part, the run code, starts the same way as the \nvalue code, with the word run and a set of '{}'.\nThis is where the rest of your code will go, where you can \nmanipulate the values that you instantiated in the values \nsection.\nThere are multiple different types of functions you can use:\n\n  write() \n  The write function sends whatever value is inside the \n  brackets to the output box\n  example: write(a);\n  This would send the value from a to the output box.\n\n  read()\n  The read function  takes whatever value is entered into \n  the input box and assigns it to the value entered into \n  the brackets.\n  example: read(a);\n  This would take whatever was entered into the input box, \n  and save it to the value a.\n\n  calc()\n  The calc function is how you do simple calculations. To \n  do this you first enter the value you are trying to \n  change, then you enter the values you are using to \n  change it.\n  example: calc(a=b+c);\n  This would add b and c and assign the answer to a.\n\n  if(){}\n  The if function is how you write code that can branch of \n  to do different things. As long as the value entered \n  between the () brackets is true, it will execute the code\n  inside the {} brackets. \n  Inside the () brackets '>', '<', '=', '>=','<=' can all \n  be used.\n  example: if(a>b){\n               write(a);\n           }\n  while(){}\n  The while function works similarly to the if function, \n  but instead of just running the code inside the {} \n  brackets it will keep repeating it for as long as what \n  is inside the () brackets is true.\n  example: while(a>b){\n               calc(a=a+a);\n           }\n\n\nFull Example:\n\nvalues{\n    one = 1;\n    two = 10;\n    three = 1;\n}\nrun{\n    while(one<=two){\n        write(one);\n        write(two);\n        calc(one=one+three);\n        if(one<=two){\n            calc(two=two-three);\n        }\n    }\n    write(one);\n    write(two);\n}\n");
+        jScrollPane6.setViewportView(jTextArea4);
+
+        jTextArea6.setEditable(false);
+        jTextArea6.setColumns(20);
+        jTextArea6.setFont(new java.awt.Font("Courier New", 0, 13)); // NOI18N
+        jTextArea6.setLineWrap(true);
+        jTextArea6.setRows(5);
+        jTextArea6.setText("Low Code Help\n\nThe low level code is basically just a list of \ninstructions that can be used to achieve different goals.\n\nThere are 10 instructions:\n\nSTP - This is a stop instruction and is used to stop the \n      program from running.\nRCV - This is a recieve instruction. It reads in a number \n      entered into the input box.\nSND - This is a send instruction. It sends whatever number\n      is currently being held to the outbox.\nSAV - This is a save instruction. It saves whatever number\n      is being held to the number of the location given \n      after it.\nLOD - This is a load instruction. It loads a number from \n      the location of the number given after it.\nADD - This is an add instruction. It adds a number from \n      the location given, to the number that is currently\n      being held.\nSUB - This is a subtract instruction. It uses the number \n      from the location given, and subtracts it from the \n      numbder currently being held.\nBRA - This is a branch always instruction. It changes the \n      next instruction to be run to the instruction being \n      held in the location given.\nBRZ - This is a branch if zero instruction. It does the \n      same as a branch always instruction but with the\n      additional condition that it will only do so if the\n      number currently being held is 0. \nBRP - This is a branch if positive instruction. It is the\n      same as a branch if zero instruction but will branch\n      as long as the number is zero or above.\nVAR - This is a variable instruction. It is used to just\n      enter the exact number given into memory.\n\n\nPlus there are an additional 3 'cheating' instructions.\n\nMLT - This is a multiply instruction. It multiplies a \n      number from the location given, to the number that \n      is currently being held. \nDIV - This is a divide instruction. It works the same as a\n      multiply instruction, but it divides instead.\nMOD - This is a modular instruction. It works the same as\n      the divide instruction, but the results it what did\n      not divide into the number.\n\n\nAfter the instruction type is the memory address that the\ninstruction will need. The only instructions that this\nnumber will not affect is the STP, RCV and SND, which\nthe number is irrelevent.\n\nYou can also use names instead of memory addresses. To do\nthis you enter '#' followed by the name, then you can use\nthat again instead of the address number.\n\nExample:\n\n#loopStart LOD #number\nSND 0\nBRA #loopStart\n#number VAR 100");
+        jScrollPane8.setViewportView(jTextArea6);
+
+        jTextArea7.setEditable(false);
+        jTextArea7.setColumns(20);
+        jTextArea7.setFont(new java.awt.Font("Courier New", 0, 13)); // NOI18N
+        jTextArea7.setLineWrap(true);
+        jTextArea7.setRows(5);
+        jTextArea7.setText("Simple Computer Simulation Help\n\nThe computer simulation itself itself is very\nsimple use.\n\nThe first thing to note is the table in the centre\nwhich is the representation of the computers\nmemory.\nThe first two columns show the numerical address\nof that rows memory, the first in decimal and the\nsecond in hexadecimal.\nThe last two columns show the value being held in\nthat memory address the first decimal and the \nsecond in hexadecimal.\nThe reason for this is because the computer\nitself works in hexadecimal, which is why there\nis a maximum of 256 memory addresses.\nSo when looking at the first digit in any one \nmemory location you will notice that the first \nnumber indicates what the instruction is:\n\n0=stop\n1=recieve\n2=send\n3=save\n4=load\n5=add\n6=subtract\n7=branch always\n8=branch if zero\n9=branch if positive\na=multiply\nb=divide\nc=modular\n\nIf decimal was used then not all of these\ninstructions would be possible.\n\nThere are also five registers, the PC(Program\nCounter), the instruction, the address, the \naccumulator and the whole instruction.\nThe PC is the program counter and shows where\nthe next memory address is going to be. The\ninstruction shows which of the 13 available\ninstructions is being used. Memory is the\nlocation the instruction will be affecting, \nwhile the accumulator shows what the current\nnumber being held is. Last is the Whole\ninstruction which is the initial number taken\nfrom the memory by the fetch step, before it\nis decoded.\n\nThere are also an input and an output box which\nis where the numbers can be entered when needed\nand where they will be output resepectively.\n\nLastly is the console window which gives \ninformation about what is happening to the \ncomputer at each step.");
+        jScrollPane9.setViewportView(jTextArea7);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6)
+                    .addComponent(jScrollPane8)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Help", jPanel11);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1485, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(1305, 1305, 1305))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void highButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_highButtonActionPerformed
+
+        
+        
+        String test = "";
+        try{
+            HighCompiler compiler = new HighCompiler(jTextArea1.getText());
+            test = compiler.compile();
+        }catch(Exception e)
+        {
+            explanationBox.setText(explanationBox.getText()+"High Level Code is Incorrect\n\n");
+        }
+        jTextArea2.setText(test);
+        
+        
+
+    }//GEN-LAST:event_highButtonActionPerformed
+
+    private void lowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lowButtonActionPerformed
+
+        try
+        {
+            LowCompiler compiler = new LowCompiler(jTextArea2.getText());
+            compiler.compile();
+            for (int i = 0; i < compiler.size(); i++)
+            {
+                sgm.commitMemory(i, compiler.getInstruction(i));
+                model = table.getModel();
+                updateAll();
+                fetchButton.setEnabled(true);
+                nextCycleButton.setEnabled(true);
+                autoButton.setEnabled(true);
+                stopButton.setEnabled(true);
+            }
+        } catch (Exception e)
+        {
+            String temp = explanationBox.getText() + "Assembly Code is incorrect\n\n";
+            explanationBox.setText(temp);
+        }
+
+    }//GEN-LAST:event_lowButtonActionPerformed
+
+    private void executeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeButtonActionPerformed
+        execute();
+    }//GEN-LAST:event_executeButtonActionPerformed
+    private void execute()
+    {
+        int instruction = sgm.getRegisters().getInstruction();
+        step = 0;
+        printExecute();
+        if(instruction == 0x0)
+            autoTimer.stop();
+        if ((instruction != 0x1) && (instruction != 0x2))
+        {
+            sgm.execute(instruction, 0);
+            fetchButton.setEnabled(true);
+            nextCycleButton.setEnabled(true);
+        } else if (instruction == 0x1)
+        {
+            jTextField1.setEnabled(true);
+        } else if (instruction == 0x2)
+        {
+            String print = String.valueOf(sgm.execute(0x2, 0)) + "\n" + jTextArea3.getText();
+            jTextArea3.setText(print);
+            fetchButton.setEnabled(true);
+            nextCycleButton.setEnabled(true);
+        }
+        updateAll();
+        executeButton.setEnabled(false);
+    }
+
+    private void nextCycleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextCycleButtonActionPerformed
+        fetch();
+        decode();
+        execute();
+    }//GEN-LAST:event_nextCycleButtonActionPerformed
+
+    private void updateAll()
+    {
+        
+//        pcField.setText(String.valueOf(sgm.getRegisters().getProgramCounter()));
+//        instructionField.setText(String.valueOf(sgm.getRegisters().getInstruction()));
+//        addressField.setText(String.valueOf(sgm.getRegisters().getMemoryAddress()));
+//        numberField.setText(String.valueOf(sgm.getRegisters().getNumber()));
+//        wholeInstructionField.setText(String.valueOf(sgm.getRegisters().getWholeInstruction()));
+        
+        pcField.setText(String.valueOf(sgm.getRegisters().getProgramCounter()));
+        instructionField.setText(Integer.toHexString(sgm.getRegisters().getInstruction()));
+        addressField.setText(String.valueOf(sgm.getRegisters().getMemoryAddress()));
+        numberField.setText(String.valueOf(sgm.getRegisters().getNumber()));
+        wholeInstructionField.setText(Integer.toHexString(sgm.getRegisters().getWholeInstruction()));
+        
+        
+        for (int i = 0; i < 256; i++)
+        {
+            model.setValueAt(Integer.toHexString(sgm.getMemory()[i]), i, 3);
+            model.setValueAt(sgm.getMemory()[i], i, 1);
+        }
+    }
+    private void resetAll()
+    {
+        sgm.reset();
+        updateAll();
+    }
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        printExecute();
+        String text = explanationBox.getText();
+        if (Integer.parseInt(jTextField1.getText()) > 0xfff)
+        {
+            text = text + "NUMBER ENTERED TOO HIGH\n\n";
+            explanationBox.setText(text);
+        } else if (Integer.parseInt(jTextField1.getText()) < -0xfff)
+        {
+            text = text + "NUMBER ENTERED TOO LOW\n\n";
+            explanationBox.setText(text);
+        } else
+        {
+            text = text + explanationBox.getText()
+                    + "Execute\nFor the instruction value ("
+                    + sgm.getRegisters().getInstruction()
+                    + ") a number is taken from the input box (" + Integer.parseInt(jTextField1.getText()) + "), and stored in the accumulator\n\n";
+            explanationBox.setText(text);
+            sgm.execute(0x1, Integer.parseInt(jTextField1.getText()));
+            jTextField1.setText("");
+            nextCycleButton.setEnabled(true);
+            jTextField1.setEnabled(false);
+            fetchButton.setEnabled(true);
+            nextCycleButton.setEnabled(true);
+            updateAll();
+        }
+
+//        nextCycleButtonActionPerformed(evt);
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void numberFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_numberFieldActionPerformed
+    {//GEN-HEADEREND:event_numberFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numberFieldActionPerformed
+
+    private void printFetch()
+    {
+        String text = explanationBox.getText() + "Fetch\nThe Program Counter (" + sgm.getRegisters().getProgramCounter() + ") is used to obtain the memory from the correct location and brought back to the CPU, it is then increased by 1 using the ALU\n\n";
+        explanationBox.setText(text);
+    }
+
+    private void printDecode()
+    {
+        String text = explanationBox.getText() + "Decode\nThe value obtained from memory is then split into the instruction type (" + sgm.getRegisters().getInstruction() + "), and the memory address (" + sgm.getRegisters().getMemoryAddress() + ") before the new execution step begins\n\n";
+        explanationBox.setText(text);
+    }
+
+    private void printExecute()
+    {
+        String instText = "";
+        switch (sgm.getRegisters().getInstruction())
+        {
+            case 0:
+                instText = "the program is stopped";
+                break;
+            case 0x2:
+                instText = "the value held in the accumulator ("
+                        + sgm.getRegisters().getNumber() + ") is sent to the output";
+                break;
+            case 0x3:
+                instText = "the value held in the accumulator ("
+                        + sgm.getRegisters().getNumber() + ") is stored at the memory location ("
+                        + sgm.getRegisters().getMemoryAddress() + ")";
+                break;
+            case 0x4:
+                instText = "the value stored in the memory location ("
+                        + sgm.getRegisters().getMemoryAddress()
+                        + ") is stored in the accumulator";
+                break;
+            case 0x7:
+                instText = "the Program Counter is changed to the memory address("
+                        + sgm.getRegisters().getMemoryAddress() + ")";
+                break;
+            case 0x8:
+                instText = "the value in the accumulator (" + sgm.getRegisters().getNumber()
+                        + ") is sent to the ALU to determine whether the value is 0."
+                        + "If it is then the Program Counter is changed to the memory address("
+                        + sgm.getRegisters().getMemoryAddress() + ")";
+                break;
+            case 0x9:
+                instText = "the value in the accumulator (" + sgm.getRegisters().getNumber()
+                        + ") is sent to the ALU to determine whether the value is positive."
+                        + "If it is then the Program Counter is changed to the memory address("
+                        + sgm.getRegisters().getMemoryAddress() + ")";
+                break;
+            case 0x5:
+            case 0x6:
+            case 0xa:
+            case 0xb:
+            case 0xc:
+                instText = "the value stored in the memory location ("
+                        + sgm.getRegisters().getMemoryAddress()
+                        + ") is retrieved and then sent to the ALU"
+                        + " with the value in the accumulator (" + sgm.getRegisters().getNumber()
+                        + ") where the appropriate equation is performed with the resulting value being returned to the accumulator";
+                break;
+        }
+
+        if (sgm.getRegisters().getInstruction() != 1)
+        {
+            String text = explanationBox.getText()
+                    + "Execute\nFor the instruction value ("
+                    + sgm.getRegisters().getInstruction()
+                    + ") " + instText + "\n\n";
+            explanationBox.setText(text);
+        }
+    }
+
+    private void fetchButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fetchButtonActionPerformed
+    {//GEN-HEADEREND:event_fetchButtonActionPerformed
+        fetch();
+    }//GEN-LAST:event_fetchButtonActionPerformed
+    private void fetch()
+    {
+        step = 1;
+        printFetch();
+        sgm.fetch();
+//        System.out.println(instruction);
+        decodeButton.setEnabled(true);
+        fetchButton.setEnabled(false);
+        nextCycleButton.setEnabled(false);
+        updateAll();
+    }
+    private void decodeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_decodeButtonActionPerformed
+    {//GEN-HEADEREND:event_decodeButtonActionPerformed
+        decode();
+    }//GEN-LAST:event_decodeButtonActionPerformed
+    private void decode()
+    {
+        step = 2;
+        printDecode();
+        sgm.decode();
+        executeButton.setEnabled(true);
+        decodeButton.setEnabled(false);
+        updateAll();
+    }
+    
+    private void autoButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_autoButtonActionPerformed
+    {//GEN-HEADEREND:event_autoButtonActionPerformed
+        if(autoTimer.isRunning())
+            autoTimer.stop();
+        else if(!autoTimer.isRunning())
+            autoTimer.start();
+    }//GEN-LAST:event_autoButtonActionPerformed
+
+    private void stopButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopButtonActionPerformed
+    {//GEN-HEADEREND:event_stopButtonActionPerformed
+        resetAll();
+    }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setQuestion(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        currentQ++;
+        score+=buttonValues[0];
+        setQuestion(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        currentQ++;
+        score+=buttonValues[1];
+        setQuestion(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        currentQ++;
+        score+=buttonValues[2];
+        setQuestion(false);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        currentQ++;
+        score+=buttonValues[3];
+        setQuestion(false);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void setQuestion(boolean restart)
+    {
+        if(restart){
+            currentQ=0;
+            score = 0;
+            jButton3.setEnabled(true);
+            jButton4.setEnabled(true);
+            jButton5.setEnabled(true);
+            jButton6.setEnabled(true);
+        }
+        if(currentQ<12)
+        {
+            jTextArea5.setText(qna[currentQ][0]);
+            jButton3.setText(qna[currentQ][1]);
+            jButton4.setText(qna[currentQ][2]);
+            jButton5.setText(qna[currentQ][3]);
+            jButton6.setText(qna[currentQ][4]);
+            String num = "Question "+(currentQ+1);
+            jLabel15.setText(num);
+        }
+        else
+        {
+            String finalScore = "Final Score: "+score;
+            jTextArea5.setText(finalScore);
+            jButton3.setText("");
+            jButton4.setText("");
+            jButton5.setText("");
+            jButton6.setText("");
+            jLabel15.setText("Quiz Over");
+        }
+        switch(currentQ)
+        {
+            case 0:
+                buttonValues[0]=0;
+                buttonValues[1]=0;
+                buttonValues[2]=0;
+                buttonValues[3]=1;
+                break;
+            case 1:
+                buttonValues[0]=0;
+                buttonValues[1]=0;
+                buttonValues[2]=1;
+                buttonValues[3]=0;
+                break;
+            case 2:
+                buttonValues[0]=0;
+                buttonValues[1]=1;
+                buttonValues[2]=0;
+                buttonValues[3]=0;
+                break;
+            case 3:
+                buttonValues[0]=0;
+                buttonValues[1]=1;
+                buttonValues[2]=0;
+                buttonValues[3]=0;
+                break;
+            case 4:
+                buttonValues[0]=0;
+                buttonValues[1]=0;
+                buttonValues[2]=0;
+                buttonValues[3]=1;
+                break;
+            case 5:
+                buttonValues[0]=1;
+                buttonValues[1]=0;
+                buttonValues[2]=0;
+                buttonValues[3]=0;
+                break;
+            case 6:
+                buttonValues[0]=0;
+                buttonValues[1]=1;
+                buttonValues[2]=0;
+                buttonValues[3]=0;
+                break;
+            case 7:
+                buttonValues[0]=1;
+                buttonValues[1]=0;
+                buttonValues[2]=0;
+                buttonValues[3]=0;
+                break;
+            case 8:
+                buttonValues[0]=0;
+                buttonValues[1]=0;
+                buttonValues[2]=1;
+                buttonValues[3]=0;
+                break;
+            case 9:
+                buttonValues[0]=0;
+                buttonValues[1]=0;
+                buttonValues[2]=0;
+                buttonValues[3]=1;
+                break;
+            case 10:
+                buttonValues[0]=0;
+                buttonValues[1]=0;
+                buttonValues[2]=0;
+                buttonValues[3]=1;
+                break;
+            case 11:
+                buttonValues[0]=0;
+                buttonValues[1]=1;
+                buttonValues[2]=0;
+                buttonValues[3]=0;
+                break;
+            default:
+                jButton3.setEnabled(false);
+                jButton4.setEnabled(false);
+                jButton5.setEnabled(false);
+                jButton6.setEnabled(false);
+                break;
+        }
+        
+        
+    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex)
+        {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex)
+        {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex)
+        {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>    
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                new GUI().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField addressField;
+    private javax.swing.JLabel addressLabel;
+    private javax.swing.JButton autoButton;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JButton decodeButton;
+    private javax.swing.JButton executeButton;
+    private javax.swing.JTextArea explanationBox;
+    private javax.swing.JButton fetchButton;
+    private javax.swing.JButton highButton;
+    private javax.swing.JTextField instructionField;
+    private javax.swing.JLabel instructionLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea jTextArea5;
+    private javax.swing.JTextArea jTextArea6;
+    private javax.swing.JTextArea jTextArea7;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton lowButton;
+    private javax.swing.JButton nextCycleButton;
+    private javax.swing.JTextField numberField;
+    private javax.swing.JTextField pcField;
+    private javax.swing.JButton stopButton;
+    private javax.swing.JTable table;
+    private javax.swing.JTextField wholeInstructionField;
+    // End of variables declaration//GEN-END:variables
+}
